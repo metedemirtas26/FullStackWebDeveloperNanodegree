@@ -1,0 +1,14 @@
+{% extends 'index.html' %}
+
+{% block products %}
+
+    {% for record in results%}
+
+        <hr>
+        <h2>{{record[1]}}</h2>
+        <h5><span class="label label-danger">{{record[0]}}</span> <span class="label label-primary">{{record[3]}}</span></h5><br>
+
+    {% endfor %}
+
+{% endblock %}
+

@@ -1,0 +1,22 @@
+{% extends 'index.html' %}
+
+{% block products %}
+
+
+<form class="modal-content animate" action="/update" method="POST">
+
+  {{pd[1]}}
+
+  <div class="container">
+    <label for="title"><b>Title</b></label>
+    <input type="hidden" value="{{pd[1]}}" name="oldtitle">
+    <input type="text" value="{{pd[1]}}" name="newtitle">
+
+    <button type="submit">Submit</button>
+  </div>
+
+</form>
+
+
+
+{% endblock %}

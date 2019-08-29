@@ -1,0 +1,74 @@
+{% extends 'index.html' %}
+
+{% block products %}
+
+{% if productlist == NULL %}
+
+<form class="modal-content animate" action="/edit" method="POST">
+
+  <div class="container">
+      <input type="hidden" placeholder="Enter title" name="id">
+
+    <label for="title"><b>Title</b></label>
+    <input type="text" placeholder="Enter title" name="title" required>
+
+    <label for="description"><b>Description</b></label>
+    <input type="text" placeholder="Enter description" name="description" required>
+
+    <label for="description"><b>Category</b></label>
+    <select name="category" class="selectpicker">
+
+      <option value="999999999">Select a Category</option>
+      {% for record in categories%}
+
+      <option value="{{record[0]}}">{{record[1]}}</option>
+
+      {% endfor %}
+    </select>
+
+    <button type="submit">Submit</button>
+  </div>
+
+
+</form>
+
+{% endif %}
+
+<form class="modal-content animate" action="/edit" method="POST">
+
+  {% for item in productlist %}
+
+  <div class="container">
+    <input type="hidden" value="{{item[0]}}" placeholder="Enter title" name="id">
+
+    <label for="title"><b>Title</b></label>
+    <input type="text" value="{{item[1]}}" placeholder="Enter title" name="title" required>
+
+    <label for="description"><b>Description</b></label>
+    <input type="text" value="{{item[2]}}" placeholder="Enter description" name="description" required>
+
+    <label for="description"><b>Category</b></label>
+    <select value="{{item[3]}}" name="category" class="selectpicker">
+
+      <option value="999999999">Select a Category</option>
+      {% for record in categories%}
+
+      {% if item[3] == record[0] %}
+      <option value="{{record[0]}}" selected="selected">{{record[1]}}</option>
+      {% endif %}
+
+      <option value="{{record[0]}}">{{record[1]}}</option>
+
+      {% endfor %}
+    </select>
+
+    <button type="submit">Submit</button>
+  </div>
+  {% endfor %}
+
+
+
+</form>
+
+
+{% endblock %}

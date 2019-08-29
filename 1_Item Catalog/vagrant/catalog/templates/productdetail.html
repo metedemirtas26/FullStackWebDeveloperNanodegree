@@ -1,0 +1,15 @@
+{% extends 'index.html' %}
+
+{% block products %}
+
+        <hr>
+        <h2>{{record[1]}}</h2>
+        <h5><span class="glyphicon glyphicon-time"></span> Post by Jane Dane, Sep 27, 2015.</h5>
+        <h5><span class="label label-danger">{{record[0]}}</span> <span class="label label-primary">{{record[3]}}</span></h5><br>
+        <p>{{record[2]}}</p>
+        <br><br>
+
+        <h5><a href="/edit/{{record[0]}}"><span class="label label-primary">Edit</span></a> <a href="/delete/{{record[0]}}"><span class="label label-danger"> Delete</span></a></h5><br>
+
+{% endblock %}
+

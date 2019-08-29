@@ -1,0 +1,14 @@
+Flask
+Flask-WTF
+Flask-Login
+Flask-SQLAlchemy
+Jinja2
+MarkupSafe
+SQLAlchemy
+Werkzeug
+argparse
+itsdangerous
+rauth
+requests
+SQLAlchemy
+jsonpickle

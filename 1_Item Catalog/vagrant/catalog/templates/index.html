@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>{{pagetitle}}</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <meta name="google-signin-client_id"
+    content="99435635169-75dtu5d64v1hbvoua9h70b3dicig69bf.apps.googleusercontent.com">
+  <!--LOAD PRE-REQUISITES FOR GOOGLE SIGN IN -->
+  <script>
+    //window.onLoadCallback = function () {
+    //  gapi.auth2.init({
+    //    client_id: '99435635169-75dtu5d64v1hbvoua9h70b3dicig69bf.apps.googleusercontent.com'
+    //  });
+    //}
+
+    function onLoad() {
+      gapi.load('auth2', function () {
+        gapi.auth2.init();
+      });
+    }
+
+    function signOut() {
+
+      var auth2 = gapi.auth2.getAuthInstance();
+
+      auth2.signOut().then(function () {
+        $.ajax({
+          type: "POST",
+          url: '/gdisconnect',
+          processData: false,
+          //data: authResult['code'],
+          contentType: 'application/octet-stream; charset=utf-8',
+        }).done(function (o) {
+          console.log('User signed out.11');
+          setTimeout(function () {
+            window.location.href = "/login";
+          }, 400);
+        });
+
+      });
+    }
+
+  </script>
+  <!-- END PRE-REQUISITES FOR GOOGLE SIGN IN -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+
+<body>
+
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">Mete Demirtas</a>
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="/">Home</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="/edit"><span class="	glyphicon glyphicon-plus"></span> Add Item</a></li>
+
+          {% if uname%}
+
+          <li><a href="/login" style="width:auto;"><span class="glyphicon glyphicon-log-in"></span> {{uname}}</a></li>
+
+          <li><a style="width:auto;" onclick="signOut();"><span class="glyphicon glyphicon-log-in"></span> Sign
+              out</a>
+          </li>
+
+          {% elif [uname == ''] %}
+
+          <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+
+          {% else %}
+          <li><a onclick="document.getElementById('id01').style.display='block'" style="width:auto;"><span
+                class="glyphicon glyphicon-log-in"></span> {{hata}}</a></li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid">
+    <div class="row content">
+
+      {% include 'header.html' %}
+
+      <div class="col-sm-9">
+
+        {% block products %}
+
+        {% for record in lastProducts%}
+
+        <hr>
+        <a href="/products/{{record[0]}}">
+          <h2>{{record[1]}}</h2>
+          <h5><span class="label label-danger">{{record[0]}}</span> <span
+              class="label label-primary">{{record[3]}}</span>
+          </h5>
+        </a><br>
+
+        {% endfor %}
+
+        {% endblock %}
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="container-fluid">
+    <p>CronyApp.com</p>
+  </footer>
+
+</body>
+
+</html>
