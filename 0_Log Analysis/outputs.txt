@@ -1,0 +1,32 @@
+
+* Question of Answers :
+
+   1. What are the most popular three articles of all time? 
+
+    Query : select a.title, mp.views from articles a, (select l.path,count(l.path) as views from log l where length(l.path)>5 and l.method = 'GET' and status='200 OK' group by l.path order by views desc limit 3) mp where right(mp.path,-9)=a.slug;
+        
+        Results :
+                    "Candidate is jerk, alleges rival" --- 338647 views 
+                    "Bears love berries, alleges bear" --- 253801 views 
+                    "Bad things gone, say good people" --- 170098 views 
+
+   2. Who are the most popular article authors of all time? 
+
+    Query : select au.name, count(au.name) as views from authors au, articles ar,log l where au.id = ar.author and right(l.path,-9)=ar.slug and l.method = 'GET' and l.status='200 OK' group by au.name order by views desc;
+        
+        Results :
+                    Markoff Chaney --- 84557 views 
+                    Anonymous Contributor --- 170098 views 
+                    Rudolf von Treppenwitz --- 423457 views 
+                    Ursula La Multa --- 507594 views 
+
+
+   3. On which days did more than 1% of requests lead to errors?
+
+    Query : select datenf as datum, CAST(countNok AS float)*100/CAST(countOk AS float) as errorPercent from (select dateNf,count(dateNf) as countNok from (select TO_CHAR(time :: DATE, 'dd/mm/yyyy') as dateNf from log where status='404 NOT FOUND') as nfTable group by dateNf) as tableNok,(select dateOk,count(dateOk) as countOk from (select TO_CHAR(time :: DATE, 'dd/mm/yyyy') as dateOk from log) as okTable group by dateOk) as tableOk where tableOk.dateOk=tableNok.datenf and countNok*100>countOk; 
+
+        Results :
+
+                  17/07/2016 --- 2.26268624680273 percent errors 
+       
+
